@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f131c">
+<script>
+  /* Apply the saved theme before first paint so there is no flash */
+  (function () {
+    var t = 'dark';
+    try { t = localStorage.getItem('theme') || 'dark'; } catch (e) {}
+    document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+  })();
+</script>
+<meta name="description" content="Jobert Fetiluna is a 4th-year student who builds websites with HTML, CSS, and JavaScript.">
+<title>Jobert Fetiluna | Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+  /* Palette is unchanged from the original portfolio */
+  :root {
+    --bg: #0f131c;
+    --surface-lowest: #0a0e16;
+    --surface-low: #181c24;
+    --surface: #1c2028;
+    --surface-high: #262a33;
+    --surface-highest: #31353e;
+    --outline: #849396;
+    --outline-variant: #3b494c;
+    --on-surface: #dfe2ee;
+    --on-surface-variant: #bac9cc;
+    --primary: #c3f5ff;
+    --accent: #00e5ff;
+    --secondary: #6cd3f7;
+    --tertiary: #41e3fe;
+    --on-accent: #00363d;
+    --line: rgba(0, 229, 255, 0.16);
+    --line-strong: rgba(0, 229, 255, 0.38);
+    --glow: rgba(0, 229, 255, 0.35);
+    --radius: 18px;
+    --header-h: 68px;
+
+    --heading: #ffffff;
+    --chip-text: #bff3ff;
+    --header-bg: rgba(15, 19, 28, .82);
+    --nav-bg: rgba(15, 19, 28, .97);
+    --tag-bg: rgba(10, 14, 22, .88);
+    --shade: rgba(10, 14, 22, .55);
+    --shadow: 0 24px 60px rgba(0,0,0,.55), 0 0 40px rgba(0,229,255,.1);
+    --shadow-sm: 0 10px 30px rgba(0,0,0,.4);
+    --glow-strong: rgba(0, 229, 255, .5);
+    --accent-soft: rgba(0, 229, 255, .1);
+    --ring: rgba(0, 229, 255, .15);
+    --em-shadow: 0 0 28px rgba(0,229,255,.35);
+    --input-bg: #0a0e16;
+    --bg-glow: rgba(0, 229, 255, .10);
+    --bg-glow-2: rgba(108, 211, 247, .07);
+    --dot: rgba(0, 229, 255, .13);
+    color-scheme: dark;
+  }
+  /* Light theme: built from the same teal/cyan family, darkened for readable contrast */
+  :root[data-theme="light"] {
+    --bg: #f3f8f9;
+    --surface-lowest: #e8f0f2;
+    --surface-low: #ffffff;
+    --surface: #eef5f6;
+    --surface-high: #e1edef;
+    --surface-highest: #d3e2e5;
+    --outline: #5d7276;
+    --outline-variant: #b5c8cc;
+    --on-surface: #151b23;
+    --on-surface-variant: #3b494c;
+    --primary: #004f58;
+    --accent: #006875;
+    --secondary: #004e61;
+    --tertiary: #006270;
+    --on-accent: #ffffff;
+    --line: rgba(0, 104, 117, .18);
+    --line-strong: rgba(0, 104, 117, .4);
+    --glow: rgba(0, 104, 117, .28);
+    --heading: #0f131c;
+    --chip-text: #004f58;
+    --header-bg: rgba(243, 248, 249, .85);
+    --nav-bg: rgba(243, 248, 249, .98);
+    --tag-bg: rgba(255, 255, 255, .92);
+    --shade: rgba(15, 19, 28, .3);
+    --shadow: 0 24px 60px rgba(15,19,28,.18);
+    --shadow-sm: 0 10px 30px rgba(15,19,28,.12);
+    --glow-strong: rgba(0, 104, 117, .4);
+    --accent-soft: rgba(0, 104, 117, .1);
+    --ring: rgba(0, 104, 117, .2);
+    --em-shadow: none;
+    --input-bg: #ffffff;
+    --bg-glow: rgba(0, 172, 193, .13);
+    --bg-glow-2: rgba(38, 157, 190, .09);
+    --dot: rgba(0, 104, 117, .16);
+    color-scheme: light;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 12px); }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--on-surface);
+    font-family: "Geist", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  /* Background design: soft corner glows + a faint dot grid that fades out toward the edges */
+  body::before, body::after { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+  body::before {
+    background:
+      radial-gradient(640px 420px at 88% 6%, var(--bg-glow), transparent 70%),
+      radial-gradient(560px 420px at 4% 78%, var(--bg-glow-2), transparent 70%);
+  }
+  body::after {
+    background-image: radial-gradient(var(--dot) 1.2px, transparent 1.4px);
+    background-size: 28px 28px;
+    -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 40%, #000 20%, transparent 85%);
+            mask-image: radial-gradient(ellipse 85% 75% at 50% 40%, #000 20%, transparent 85%);
+  }
+  body, header.site, .card { transition: background-color .3s ease, border-color .25s, color .3s ease; }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  h1, h2, h3, h4 { font-family: "Space Grotesk", sans-serif; line-height: 1.15; letter-spacing: -0.02em; margin: 0; color: var(--heading); }
+  p { margin: 0; }
+  ul { list-style: none; margin: 0; padding: 0; }
+  .mono { font-family: "JetBrains Mono", monospace; }
+  .icon { font-family: "Material Symbols Outlined"; font-weight: normal; font-style: normal; line-height: 1; letter-spacing: normal; text-transform: none; white-space: nowrap; font-size: 20px; display: inline-block; vertical-align: middle; font-feature-settings: "liga"; -webkit-font-feature-settings: "liga"; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+  .skip { position: absolute; left: 12px; top: -60px; background: var(--accent); color: var(--on-accent); padding: 10px 16px; border-radius: 10px; font-weight: 700; z-index: 100; }
+  .skip:focus { top: 12px; }
+
+  .wrap { width: min(1120px, 100% - 40px); margin-inline: auto; }
+  section { padding: 96px 0; position: relative; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-family: "JetBrains Mono", monospace; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  .eyebrow::before { content: ""; width: 28px; height: 2px; background: var(--accent); box-shadow: 0 0 10px var(--glow); border-radius: 2px; }
+  .section-head { display: grid; gap: 14px; margin-bottom: 44px; max-width: 640px; }
+  .section-head h2 { font-size: clamp(32px, 5vw, 48px); }
+  .section-head p { color: var(--on-surface-variant); }
+
+  /* ---------- Header ---------- */
+  header.site {
+    position: fixed; inset: 0 0 auto 0; z-index: 50;
+    height: var(--header-h); padding-top: env(safe-area-inset-top, 0px);
+    background: var(--header-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--line);
+  }
+  header.site .wrap { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .brand { display: inline-flex; align-items: center; gap: 12px; font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 18px; color: var(--heading); letter-spacing: -.01em; }
+  .brand-mark { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--surface-high); border: 1px solid var(--line-strong); color: var(--accent); font-size: 14px; font-family: "JetBrains Mono", monospace; box-shadow: 0 0 14px rgba(0,229,255,.2); }
+  nav.primary ul { display: flex; gap: 4px; }
+  nav.primary a { display: block; padding: 9px 16px; border-radius: 999px; font-size: 14px; font-weight: 500; color: var(--on-surface-variant); transition: color .2s, background .2s; }
+  nav.primary a:hover { color: var(--heading); background: var(--surface); }
+  nav.primary a.active { color: var(--accent); background: var(--accent-soft); }
+  .header-right { display: flex; align-items: center; gap: 8px; }
+  .icon-btn { width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface-low); color: var(--on-surface); cursor: pointer; display: grid; place-items: center; transition: border-color .2s, color .2s, transform .15s; }
+  .icon-btn:hover { border-color: var(--line-strong); color: var(--accent); }
+  .icon-btn:active { transform: scale(.94); }
+  .menu-btn { display: none; }
+
+  /* ---------- Buttons / chips ---------- */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 24px; border-radius: 14px; font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 15px; border: 1px solid transparent; cursor: pointer; transition: transform .15s, box-shadow .2s, background .2s, border-color .2s; }
+  .btn:active { transform: scale(.97); }
+  .btn-primary { background: var(--accent); color: var(--on-accent); box-shadow: 0 0 24px var(--glow); }
+  .btn-primary:hover { background: var(--tertiary); box-shadow: 0 0 32px var(--glow-strong); }
+  .btn-ghost { background: var(--surface-low); color: var(--heading); border-color: var(--line); }
+  .btn-ghost:hover { border-color: var(--line-strong); background: var(--surface); }
+  .chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; background: var(--surface-high); border: 1px solid var(--line); color: var(--chip-text); font-size: 13px; font-family: "JetBrains Mono", monospace; white-space: nowrap; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); flex: none; }
+  .dot.pulse { animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+
+  /* ---------- Hero ---------- */
+  #home { padding-top: calc(var(--header-h) + 72px); padding-bottom: 72px; overflow: hidden; }
+  #home::before { content: ""; position: absolute; width: 560px; height: 560px; right: -180px; top: 40px; background: radial-gradient(circle, var(--bg-glow), transparent 65%); pointer-events: none; }
+  .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 64px; align-items: center; position: relative; }
+  .hero-copy { display: grid; gap: 26px; justify-items: start; }
+  .hero-copy h1 { font-size: clamp(40px, 6.4vw, 72px); font-weight: 700; letter-spacing: -.035em; }
+  .hero-copy h1 em { font-style: normal; color: var(--accent); text-shadow: var(--em-shadow); }
+  .hero-copy .lead { font-size: 18px; color: var(--on-surface-variant); max-width: 540px; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; }
+  .portrait-wrap { position: relative; justify-self: center; width: min(100%, 400px); }
+  .portrait-wrap::before { content: ""; position: absolute; inset: 18px -18px -18px 18px; border: 1px solid var(--line-strong); border-radius: 32px; z-index: 0; }
+  .portrait { position: relative; z-index: 1; aspect-ratio: 4 / 5; border-radius: 32px; overflow: hidden; background: var(--surface-high); border: 1px solid var(--line); box-shadow: var(--shadow); }
+  .portrait img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; }
+  .portrait::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, var(--shade), transparent 45%); }
+  .float-tag { position: absolute; z-index: 2; background: var(--tag-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); animation: bob 6s ease-in-out infinite; }
+  .float-tag.t1 { left: -22px; top: 14%; }
+  .float-tag.t2 { right: -14px; top: 52%; animation-delay: -2s; }
+  .float-tag.t3 { left: 8%; bottom: -16px; animation-delay: -4s; }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+  /* ---------- Marquee ---------- */
+  .marquee { border-block: 1px solid var(--line); background: var(--surface-lowest); overflow: hidden; padding: 18px 0; }
+  .marquee-track { display: flex; width: max-content; animation: scroll 32s linear infinite; }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  .marquee ul { display: flex; gap: 14px; padding-right: 14px; }
+  .marquee li { display: inline-flex; align-items: center; gap: 12px; font-family: "Space Grotesk", sans-serif; font-size: 18px; font-weight: 500; color: var(--on-surface-variant); white-space: nowrap; }
+  .marquee li::before { content: ""; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 8px var(--accent); }
+  @keyframes scroll { to { transform: translateX(-50%); } }
+
+  /* ---------- About ---------- */
+  .about-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: start; }
+  .prose { display: grid; gap: 18px; color: var(--on-surface-variant); font-size: 17px; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+  .card { background: var(--surface-low); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; transition: border-color .25s, transform .25s, box-shadow .25s; }
+  .card:hover { border-color: var(--line-strong); }
+  .stat { text-align: left; padding: 18px; }
+  .stat b { display: block; font-family: "Space Grotesk", sans-serif; font-size: 26px; color: var(--accent); }
+  .stat span { font-size: 13px; color: var(--on-surface-variant); line-height: 1.3; display: block; margin-top: 2px; }
+  .about-side { display: grid; gap: 20px; }
+  .edu { display: grid; gap: 6px; }
+  .edu .icon-box { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--surface-high); border: 1px solid var(--line); color: var(--accent); margin-bottom: 10px; }
+  .edu h3 { font-size: 19px; }
+  .edu p { color: var(--on-surface-variant); font-size: 15px; }
+  .edu .when { color: var(--accent); font-size: 13px; font-family: "JetBrains Mono", monospace; }
+
+  /* ---------- Skills ---------- */
+  .skill-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .skill-card { display: grid; gap: 16px; align-content: start; }
+  .skill-card .icon-box { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; background: var(--surface-high); border: 1px solid var(--line); color: var(--accent); box-shadow: 0 0 14px rgba(0,229,255,.15); }
+  .skill-card h3 { font-size: 22px; }
+  .skill-card > p { color: var(--on-surface-variant); font-size: 15px; }
+  .skill-card ul { display: grid; gap: 10px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .skill-card li { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 15px; }
+  .skill-card li span.lvl { font-family: "JetBrains Mono", monospace; font-size: 11px; padding: 3px 10px; border-radius: 999px; background: var(--accent-soft); border: 1px solid var(--line-strong); color: var(--accent); }
+  .built-with { margin-top: 36px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .built-with > span { font-size: 14px; color: var(--on-surface-variant); margin-right: 6px; }
+
+  /* ---------- Project ---------- */
+  .project { display: grid; grid-template-columns: 1.05fr .95fr; overflow: hidden; padding: 0; }
+  .project-img { position: relative; min-height: 320px; background: var(--surface-lowest); }
+  .project-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .92; }
+  .project-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to right, transparent 60%, var(--surface-low)); }
+  .project-img .chip { position: absolute; left: 18px; top: 18px; z-index: 1; background: var(--tag-bg); }
+  .project-body { padding: 40px; display: grid; gap: 18px; align-content: center; }
+  .project-body .kicker { font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; }
+  .project-body h3 { font-size: clamp(24px, 3vw, 32px); }
+  .project-body p { color: var(--on-surface-variant); }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  /* ---------- Contact ---------- */
+  .contact-grid { display: grid; grid-template-columns: .95fr 1.05fr; gap: 28px; align-items: start; }
+  .contact-info { display: grid; gap: 16px; }
+  .info-row { display: flex; align-items: center; gap: 16px; }
+  .info-row .icon-box { width: 44px; height: 44px; flex: none; border-radius: 12px; display: grid; place-items: center; background: var(--surface-high); border: 1px solid var(--line); color: var(--accent); }
+  .info-row small { display: block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--outline); font-family: "JetBrains Mono", monospace; }
+  .info-row strong { font-weight: 600; word-break: break-all; }
+  .copy { margin-left: auto; flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 10px; background: var(--surface-high); border: 1px solid var(--line); color: var(--on-surface); font: 500 13px "Geist", sans-serif; cursor: pointer; transition: border-color .2s, color .2s; }
+  .copy:hover { border-color: var(--line-strong); color: var(--accent); }
+  .socials { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  .social { display: flex; align-items: center; gap: 12px; padding: 18px; }
+  .social:hover { transform: translateY(-3px); box-shadow: var(--shadow-sm); }
+  .social .icon:last-child { margin-left: auto; color: var(--outline); font-size: 18px; }
+  form { display: grid; gap: 18px; }
+  label { display: grid; gap: 8px; font-size: 14px; font-weight: 500; }
+  input, textarea { width: 100%; padding: 14px 16px; border-radius: 12px; background: var(--input-bg); border: 1px solid var(--outline-variant); color: var(--on-surface); font: 400 15px "Geist", sans-serif; transition: border-color .2s, box-shadow .2s; }
+  input::placeholder, textarea::placeholder { color: rgba(132,147,150,.7); }
+  input:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--ring); }
+  textarea { resize: vertical; min-height: 130px; }
+  .ok { display: none; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; background: var(--surface-high); border: 1px solid var(--line-strong); color: var(--accent); font-size: 14px; }
+  .ok.show { display: flex; }
+
+  /* ---------- Footer ---------- */
+  footer.site { border-top: 1px solid var(--line); background: var(--surface-lowest); padding: 36px 0 calc(36px + env(safe-area-inset-bottom, 0px)); }
+  footer .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; font-size: 14px; color: var(--on-surface-variant); }
+  footer .links { display: flex; gap: 20px; align-items: center; }
+  footer a:hover { color: var(--accent); }
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  .no-js .reveal { opacity: 1; transform: none; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 960px) {
+    section { padding: 72px 0; }
+    .hero-grid, .about-grid, .contact-grid, .project { grid-template-columns: 1fr; }
+    .hero-grid { gap: 56px; }
+    .portrait-wrap { width: min(100%, 340px); }
+    .skill-grid { grid-template-columns: 1fr; }
+    .project-img { min-height: 240px; }
+    .project-img::after { background: linear-gradient(to bottom, transparent 60%, var(--surface-low)); }
+  }
+  @media (max-width: 760px) {
+    .menu-btn { display: grid; }
+    nav.primary { position: absolute; left: 0; right: 0; top: var(--header-h); background: var(--nav-bg); border-bottom: 1px solid var(--line); padding: 8px 20px 16px; display: none; }
+    nav.primary.open { display: block; }
+    nav.primary ul { flex-direction: column; }
+    nav.primary a { padding: 14px 12px; border-radius: 12px; font-size: 16px; }
+    .stats { grid-template-columns: 1fr 1fr 1fr; }
+    .socials { grid-template-columns: 1fr; }
+    .project-body { padding: 28px 24px; }
+    .float-tag.t1 { left: -6px; }
+    .float-tag.t2 { right: -6px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
+    .marquee { overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="#home" aria-label="Jobert Fetiluna, back to top">
+      <span class="brand-mark">JF</span>
+      <span>Jobert Fetiluna</span>
+    </a>
+    <div class="header-right">
+      <nav class="primary" id="nav" aria-label="Primary">
+        <ul>
+          <li><a href="#home" class="active">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to light mode"><span class="icon" id="themeIcon">light_mode</span></button>
+      <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><span class="icon" id="menuIcon">menu</span></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- HOME -->
+  <section id="home">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="chip"><span class="dot pulse"></span>4th-Year Student</span>
+        <h1>Hi, I’m <em>Jobert Fetiluna.</em></h1>
+        <p class="lead">I’m a 4th-year student who loves turning ideas into websites. I started building in my 1st year, and I’m still learning something new with every page I make.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#projects">See my project <span class="icon">arrow_downward</span></a>
+          <a class="btn btn-ghost" href="#contact">Contact me <span class="icon" style="color:var(--accent)">send</span></a>
+        </div>
+      </div>
+      <div class="portrait-wrap">
+        <div class="portrait"><img src="profile.jpg" alt="Portrait of Jobert Fetiluna" width="400" height="500" fetchpriority="high"></div>
+        <span class="chip float-tag t1">Websites</span>
+        <span class="chip float-tag t2">4th Year</span>
+        <span class="chip float-tag t3">Always learning</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <ul>
+        <li>Website building</li><li>HTML</li><li>CSS</li><li>JavaScript</li><li>Responsive layouts</li><li>Problem solving</li><li>Learning as I go</li>
+      </ul>
+      <ul>
+        <li>Website building</li><li>HTML</li><li>CSS</li><li>JavaScript</li><li>Responsive layouts</li><li>Problem solving</li><li>Learning as I go</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">About</span>
+        <h2>About me</h2>
+        <p>Get to know my journey and education.</p>
+      </div>
+      <div class="about-grid">
+        <div class="reveal">
+          <div class="prose">
+            <p>I’m a BSIT student at Cebu Eastern College, and I’ve been building websites since my 1st year. I like turning an idea into a page that people can open and use, and I learn best by trying things and seeing what happens.</p>
+            <p>When I get stuck, I go one step at a time: check what I wrote, test it, and look for the line that causes the problem. I’m not afraid to ask for help, and I enjoy working with my classmates on group tasks.</p>
+            <p>I use VS Code and Antigravity to help me write code, and I try to understand what it does before I use it. I put my websites online with Vercel, and this portfolio is one of them.</p>
+          </div>
+          <div class="stats">
+            <div class="card stat"><b class="mono">Yr 1</b><span>Started building websites</span></div>
+            <div class="card stat"><b class="mono">Yr 4</b><span>Student</span></div>
+            <div class="card stat"><b class="mono">Always</b><span>Learning</span></div>
+          </div>
+        </div>
+        <div class="about-side reveal">
+          <div class="card edu">
+            <div class="icon-box"><span class="icon">school</span></div>
+            <h3>Bachelor of Science in Information Technology (BSIT)</h3>
+            <p>Cebu Eastern College, Incorporated</p>
+            <p class="when">Expected graduation: 2027</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Skills</span>
+        <h2>Simple skills I have learned</h2>
+        <p>Skills I have learned and practiced as a student.</p>
+      </div>
+      <div class="skill-grid">
+        <article class="card skill-card reveal">
+          <div class="icon-box"><span class="icon">code</span></div>
+          <h3>Languages</h3>
+          <p>3 languages I am learning.</p>
+          <ul>
+            <li>HTML <span class="lvl">Basics</span></li>
+            <li>CSS <span class="lvl">Basics</span></li>
+            <li>JavaScript <span class="lvl">Beginner</span></li>
+          </ul>
+        </article>
+        <article class="card skill-card reveal">
+          <div class="icon-box"><span class="icon">construction</span></div>
+          <h3>Tools</h3>
+          <p>What I use to build websites.</p>
+          <ul>
+            <li>VS Code <span class="lvl">Writing code</span></li>
+            <li>Antigravity <span class="lvl">Coding with AI</span></li>
+            <li>Vercel <span class="lvl">Hosting</span></li>
+          </ul>
+        </article>
+        <article class="card skill-card reveal">
+          <div class="icon-box"><span class="icon">psychology</span></div>
+          <h3>Core Skills</h3>
+          <p>Everyday student skills.</p>
+          <ul>
+            <li>Responsive design</li>
+            <li>Problem solving</li>
+            <li>Teamwork</li>
+          </ul>
+        </article>
+      </div>
+      <div class="built-with reveal">
+        <span>This site is built with</span>
+        <span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Projects</span>
+        <h2>Projects &amp; Work</h2>
+        <p>Websites I have built since my 1st year.</p>
+      </div>
+      <article class="card project reveal">
+        <div class="project-img">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQd44myRNnKvF34xZ3emIXbUpFdIWGOg89iJU91kpO2Fm8AY1R9h7K_fDee7_A9m26wlc0K3AO2gR091HtULUixfrUj34DlsnJVKnRYeIUEMGlq5qJaUPVJHOulomv0izFOoEl7PJftNzMc5ZWpxyMLxr0D4N1LHoHFqI7QezSmdlZGCsax94h5tlGlmCYtRUt8iGVk8s3kJDYpTaCCJKnjIYu2PxUYLDB2ceXmhnkCEYKlcLWgtXHVg" alt="Preview of the Student Study Planner website" loading="lazy" width="640" height="420">
+          <span class="chip"><span class="dot pulse"></span>Featured Project</span>
+        </div>
+        <div class="project-body">
+          <span class="kicker">2026</span>
+          <h3>Student Study Planner</h3>
+          <p>A website that helps students keep their subjects and deadlines in one place. It has a clean layout that works on both phones and computers, and it was built with HTML, CSS, and JavaScript.</p>
+          <div class="tags"><span class="chip">HTML5</span><span class="chip">CSS Grid</span><span class="chip">JavaScript</span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Contact</span>
+        <h2>Get in Touch</h2>
+        <p>Email is the quickest way to reach me. You can also find me on Vercel.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <div class="card info-row">
+            <div class="icon-box"><span class="icon">mail</span></div>
+            <div><small>Direct email</small><strong id="emailText">jobertfets@gmail.com</strong></div>
+            <button class="copy" id="copyBtn" type="button"><span class="icon" id="copyIcon" style="font-size:16px">content_copy</span><span id="copyLabel">Copy</span></button>
+          </div>
+          <div class="socials">
+            <a class="card social" href="https://jobert-portfolio.vercel.app" target="_blank" rel="noopener noreferrer"><span class="icon" style="color:var(--accent)">change_history</span><span><small class="mono" style="display:block;font-size:11px;color:var(--outline);letter-spacing:.1em">VERCEL</small>jobert-portfolio.vercel.app</span><span class="icon">north_east</span></a>
+          </div>
+          <div class="card info-row">
+            <div class="icon-box"><span class="icon">pin_drop</span></div>
+            <div><small>Current location</small><strong>Cebu City</strong><div style="color:var(--accent);font-size:14px">Open to internship</div></div>
+          </div>
+        </div>
+        <div class="card reveal">
+          <form id="contactForm">
+            <label>Your Name *<input id="nameInput" name="name" type="text" placeholder="Juan Dela Cruz" required></label>
+            <label>Your Email *<input id="emailInput" name="_replyto" type="email" placeholder="juandelacruz@example.com" required></label>
+            <label>Subject<input id="subjectInput" name="subject" type="text" placeholder="Internship Opportunity"></label>
+            <label>Message *<textarea id="messageInput" name="message" placeholder="Write your message here..." required></textarea></label>
+            <button class="btn btn-primary" type="submit"><span class="icon">outgoing_mail</span>Send Message</button>
+            <div class="ok" id="formOk" role="status"><span class="icon">check_circle</span>Message drafted! Opening email handler...</div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div>
+      <div>© 2026 Jobert Fetiluna</div>
+      <div class="mono" style="font-size:12px;color:var(--outline)">Built with plain HTML, CSS, and JavaScript.</div>
+    </div>
+    <div class="links">
+      <a href="https://jobert-portfolio.vercel.app" target="_blank" rel="noopener noreferrer">Vercel</a><a href="mailto:jobertfets@gmail.com">Email</a>
+      <a href="#home" style="display:inline-flex;align-items:center;gap:4px"><span class="icon" style="font-size:18px">arrow_upward</span>Top</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Light / dark theme
+  const root = document.documentElement, themeBtn = document.getElementById('themeBtn'), themeIcon = document.getElementById('themeIcon');
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  function applyTheme(mode) {
+    root.setAttribute('data-theme', mode);
+    themeIcon.textContent = mode === 'dark' ? 'light_mode' : 'dark_mode';
+    themeBtn.setAttribute('aria-label', mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    if (themeMeta) themeMeta.setAttribute('content', mode === 'dark' ? '#0f131c' : '#f3f8f9');
+  }
+  applyTheme(root.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
+  themeBtn.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    applyTheme(next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  });
+
+  // Mobile menu
+  const menuBtn = document.getElementById('menuBtn'), nav = document.getElementById('nav'), menuIcon = document.getElementById('menuIcon');
+  function setMenu(open) {
+    nav.classList.toggle('open', open);
+    menuBtn.setAttribute('aria-expanded', open);
+    menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    menuIcon.textContent = open ? 'close' : 'menu';
+  }
+  menuBtn.addEventListener('click', () => setMenu(!nav.classList.contains('open')));
+  nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+
+  // Highlight current section in the nav
+  const links = [...nav.querySelectorAll('a')];
+  const sections = links.map(a => document.querySelector(a.getAttribute('href')));
+  const spy = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  sections.forEach(s => s && spy.observe(s));
+
+  // Fade sections in as they scroll into view
+  const io = new IntersectionObserver((entries, obs) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Copy email
+  const copyBtn = document.getElementById('copyBtn'), copyLabel = document.getElementById('copyLabel'), copyIcon = document.getElementById('copyIcon');
+  copyBtn.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(document.getElementById('emailText').textContent.trim()); } catch (e) {}
+    copyLabel.textContent = 'Copied!'; copyIcon.textContent = 'done';
+    setTimeout(() => { copyLabel.textContent = 'Copy'; copyIcon.textContent = 'content_copy'; }, 1800);
+  });
+
+  // Contact form: opens the visitor's email app with the message filled in
+  const form = document.getElementById('contactForm'), ok = document.getElementById('formOk');
+  form.addEventListener('submit', e => {
+    {
+      e.preventDefault();
+      const name = encodeURIComponent(document.getElementById('nameInput').value);
+      const email = encodeURIComponent(document.getElementById('emailInput').value);
+      const subject = encodeURIComponent(document.getElementById('subjectInput').value || 'Portfolio Contact');
+      const message = encodeURIComponent(document.getElementById('messageInput').value);
+      ok.classList.add('show');
+      setTimeout(() => { window.location.href = `mailto:jobertfets@gmail.com?subject=${subject}&body=From: ${name} (${email})%0D%0A%0D%0A${message}`; }, 350);
+    }
+  });
+</script>
+</body>
+</html>
